@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from skimage import transform
+from torchvision.transforms import functional as F
 
 class Rescale(object):
     """Rescale the image in a sample to a given size.
@@ -71,4 +72,36 @@ class ToTensor(object):
         # numpy image: H x W x C
         # torch image: C X H X W
         # image = image.transpose((2, 0, 1))
-        return({'image': torch.from_numpy(image), 'emotion':emotion})
+        return({'image': F.to_tensor(image), 'emotion':emotion})
+
+class Normalize(object):
+    """Normalize a tensor image with mean and standard deviation.
+    Given mean: ``(M1,...,Mn)`` and std: ``(S1,..,Sn)`` for ``n`` channels, this transform
+    will normalize each channel of the input ``torch.*Tensor`` i.e.
+    ``input[channel] = (input[channel] - mean[channel]) / std[channel]``
+
+    .. note::
+        This transform acts out of place, i.e., it does not mutates the input tensor.
+
+    Args:
+        mean (sequence): Sequence of means for each channel.
+        std (sequence): Sequence of standard deviations for each channel.
+        inplace(bool,optional): Bool to make this operation in-place.
+
+    """
+
+    def __init__(self, mean, std, inplace=False):
+        self.mean = mean
+        self.std = std
+        self.inplace = inplace
+    
+    def __call__(self, sample):
+        image, emotion = sample['image'], sample['emotion']
+        
+        norm_image = F.normalize(image, self.mean, self.std, self.inplace)
+        
+        return({'image':norm_image, 'emotion':emotion})
+
+
+    def __repr__(self):
+        return self.__class__.__name__ + '(mean={0}, std={1})'.format(self.mean, self.std)

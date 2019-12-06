@@ -11,7 +11,7 @@ import transform as tr
 class FaceEmotionsDataset(Dataset):
     """Face Emotions dataset."""
 
-    def __init__(self, csv_file, root_dir, transform=None):
+    def __init__(self, csv_file, root_dir, classes, transform=None):
         """
         Args:
             csv_file (string): Path to the csv file with annotations.
@@ -22,6 +22,7 @@ class FaceEmotionsDataset(Dataset):
         self.emotions_frame = pd.read_csv(csv_file)
         self.root_dir = root_dir
         self.transform = transform
+        self.classes = classes
     
     def __len__(self):
         return(len(self.emotions_frame))
@@ -29,12 +30,17 @@ class FaceEmotionsDataset(Dataset):
     def __getitem__(self, idx):
         if torch.is_tensor(idx):
             idx = idx.tolist()
-        
+        # get the path to the image
         img_name = os.path.join(self.root_dir,
                                 self.emotions_frame.iloc[idx, 0])
+        # load the image as gray scaled image
         image = io.imread(img_name, as_gray=True)
-        emotion = self.emotions_frame.iloc[idx, 1]
-        sample = {'image': image, 'emotion': emotion}
+        # get the emotion label
+        emotion = self.emotions_frame.iloc[idx, 1].lower()
+        # convert emotion string into id.
+        emotion_id = self.classes.index(emotion)
+        # define the sample
+        sample = {'image': image, 'emotion': emotion_id}
 
         if self.transform:
             sample = self.transform(sample)
@@ -44,9 +50,18 @@ class FaceEmotionsDataset(Dataset):
 
 if __name__ == "__main__":
     # DEV TESTS
-    
+    emotions = ['neutral', 
+                'happiness', 
+                'surprise', 
+                'sadness', 
+                'anger', 
+                'disgust',
+                'fear',
+                'contempt']
+
     face_dataset = FaceEmotionsDataset(csv_file='csv/cleaned_data.csv',
-                                       root_dir='img/')
+                                       root_dir='img/',
+                                       classes=emotions)
     
     fig = plt.figure()
 
@@ -57,7 +72,7 @@ if __name__ == "__main__":
 
         ax = plt.subplot(1, 4, i+1)
         plt.tight_layout()
-        ax.set_title('{}: {}'.format(i, sample['emotion']))
+        ax.set_title('{}: {}'.format(i, emotions[sample['emotion']]))
         ax.axis('off')
         ax.imshow(sample['image'])
 
