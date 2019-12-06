@@ -1,1 +1,5 @@
 src/img
+src/csv/balanced*
+src/csv/labels*
+/**/__pycache__
+/**/.ipynb_*
