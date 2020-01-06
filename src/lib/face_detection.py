@@ -4,6 +4,7 @@ import numpy as np
 from skimage import transform
 from torchvision.transforms import functional as F
 
+# TO CHANGE ACCORDINGLY
 PATH = '/home/eisti/Private/Coding/emotion-prediction/src/lib/'
 
 class FaceDetection:
