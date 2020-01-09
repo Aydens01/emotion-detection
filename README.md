@@ -10,7 +10,7 @@ $ git clone https://github.com/Aydens01/emotion-prediction.git
 
 ### Dependencies
 
-This project requires [PyTorch](https://pytorch.org/) and Jupyter Notebook
+This project requires [PyTorch](https://pytorch.org/), [OpenCV](https://docs.opencv.org/3.4/da/df6/tutorial_py_table_of_contents_setup.html) and Jupyter Notebook.
 
 ### Structure
 
