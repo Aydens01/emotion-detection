@@ -1,7 +1,5 @@
 # emotion-prediction
 
-Predict emotion from faces.
-
 ### Installation
 
 ```sh
