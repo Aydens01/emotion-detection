@@ -1,15 +1,25 @@
+#! /usr/bin/env python
+#-*- coding: utf-8 -*-
+
+"""
+author  : Adrien Lafage\n
+date    : february 2020
+Custom Image Processing classes
+===========
+"""
+
+############| IMPORTS |#############
 import torch
 import numpy as np
 from skimage import transform
 from torchvision.transforms import functional as F
+####################################
 
 class Rescale(object):
     """Rescale the image in a sample to a given size.
 
     Args:
-        output_size (tuple or int): Desired output size. If tuple, output is
-            matched to output_size. If int, smaller of image edges is matched
-            to output_size keeping aspect ratio the same.
+        output_size (tuple or int): Desired output size. If tuple, output is matched to output_size. If int, smaller of image edges is matched to output_size keeping aspect ratio the same.
     """
 
     def __init__(self, output_size):
@@ -38,8 +48,7 @@ class RandomCrop(object):
     """Crop randomly the image in a sample.
 
     Args:
-        output_size (tuple or int): Desired output size. If int, square crop
-            is made. 
+        output_size (tuple or int): Desired output size. If int, square crop is made. 
     """
     def __init__(self, output_size):
         assert isinstance(output_size, (int, tuple))

@@ -1,5 +1,17 @@
+#! /usr/bin/env python
+#-*- coding: utf-8 -*-
+
+"""
+author  : Adrien Lafage\n
+date    : february 2020
+Convolutional Neural Network class
+===========
+"""
+
+############| IMPORTS |#############
 import torch.nn as nn
 import torch.nn.functional as F
+####################################
 
 class Net(nn.Module):
     def __init__(self):

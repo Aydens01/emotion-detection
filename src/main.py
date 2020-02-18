@@ -1,7 +1,9 @@
+############| IMPORTS |#############
 import cv2
 import torch
 from lib.face_detection import FaceDetection
 from lib.network import Net
+####################################
 
 class EmotionRecognition():
 

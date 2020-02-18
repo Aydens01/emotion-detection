@@ -1,8 +1,20 @@
+#! /usr/bin/env python
+#-*- coding: utf-8 -*-
+
+"""
+author  : Adrien Lafage\n
+date    : february 2020
+Face Detection class
+===========
+"""
+
+############| IMPORTS |#############
 import cv2
 import torch
 import numpy as np
 from skimage import transform
 from torchvision.transforms import functional as F
+####################################
 
 # TO CHANGE ACCORDINGLY
 PATH = '/home/eisti/Private/Coding/emotion-prediction/src/lib/'

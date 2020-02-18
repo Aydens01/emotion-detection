@@ -1,3 +1,14 @@
+#! /usr/bin/env python
+#-*- coding: utf-8 -*-
+
+"""
+author  : Adrien Lafage\n
+date    : february 2020
+Dataset class
+===========
+"""
+
+############| IMPORTS |#############
 import os
 import torch
 import numpy as np
@@ -6,7 +17,7 @@ from skimage import io
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 import matplotlib.pyplot as plt
-import transform as tr
+####################################
 
 class FaceEmotionsDataset(Dataset):
     """Face Emotions dataset."""
