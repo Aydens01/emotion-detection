@@ -1,4 +1,4 @@
-# emotion-prediction
+# emotion-detection
 
 ## Installation
 
