@@ -1,8 +1,22 @@
+#! /usr/bin/env python
+#-*- coding: utf-8 -*-
+
+"""
+author  : Adrien Lafage\n
+date    : february 2020
+Script to run the live application of emotion detection 
+===========
+"""
+
 ############| IMPORTS |#############
 import cv2
 import torch
 from lib.face_detection import FaceDetection
 from lib.network import Net
+####################################
+
+###########| CONSTANTS |############
+CNN_PATH = './src/models/network_v2.pth'
 ####################################
 
 class EmotionRecognition():
@@ -68,8 +82,6 @@ class EmotionRecognition():
 
 
 if __name__ == "__main__":
-
-    CNN_PATH = './models/network_v2.pth'
 
     cap = cv2.VideoCapture(0)
 

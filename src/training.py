@@ -71,8 +71,8 @@ if __name__ == "__main__":
     ]
 
     dataset = FaceEmotionsDataset(
-        csv_file='csv/balanced.csv',
-        root_dir='img/',
+        csv_file='./src/csv/balanced.csv',
+        root_dir='./src/img/',
         classes=emotions,
         transform=data_transform
     )
@@ -181,8 +181,8 @@ if __name__ == "__main__":
     if full_test:
         print('> STARTED FULL TESTING')
         dataset = FaceEmotionsDataset(
-            csv_file='csv/cleaned_data.csv',
-            root_dir='img/',
+            csv_file='./src/csv/cleaned_data.csv',
+            root_dir='./src/img/',
             classes=emotions,
             transform=data_transform
         )
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     save = True if 'y' == input('Do you want to save this network? (y/n): ').lower() else False
 
     if save:
-        PATH = './models/'+input('Please name your network save: ')+'.pth'
+        PATH = './src/models/'+input('Please name your network save: ')+'.pth'
         torch.save(net.state_dict(), PATH)
         print('>>> network saved')
     
