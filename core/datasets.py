@@ -131,10 +131,10 @@ class FER13(Dataset):
         gray = np.array(
             list(map(int, pixels.split(" "))), dtype=np.uint8
         ).reshape((48, 48))
-        color = np.repeat(gray[..., np.newaxis], 3, -1)
+        # color = np.repeat(gray[..., np.newaxis], 3, -1)
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
-        img = Image.fromarray(color)
+        img = Image.fromarray(gray)
 
         if self.transform is not None:
             img = self.transform(img)
