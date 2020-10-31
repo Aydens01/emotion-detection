@@ -1,6 +1,4 @@
-src/img
-src/csv/balanced*
-src/csv/labels*
+data
 /**/__pycache__
 /**/.ipynb_*
 .vscode

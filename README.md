@@ -1,11 +1,5 @@
 # emotion-detection
 
-## Installation
-
-```sh
-git clone https://github.com/Aydens01/emotion-prediction.git
-```
-
 ## Dependencies
 
 This project requires [PyTorch](https://pytorch.org/) and [OpenCV](https://docs.opencv.org/3.4/da/df6/tutorial_py_table_of_contents_setup.html).
@@ -38,13 +32,13 @@ You have to change the path used in `face_detection.py` to prevent errors.
 You can change the neural network loaded and used in the application by changing the path at the 19th line in `main.py`:
 
 ```py
-CNN_PATH = './src/models/network_v2.pth'
+CNN_PATH = './models/network_v2.pth'
 ```
 
 Commands to run the live application:
 
 ```sh
-python3.7 src/main.py
+python src/main.py
 ```
 
 You can see the prediction results on the terminal.
