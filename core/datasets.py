@@ -6,6 +6,7 @@ import pandas as pd
 import cv2
 from PIL import Image
 from torch.utils.data import Dataset
+from torchvision.datasets.utils import download_and_extract_archive
 import matplotlib.pyplot as plt
 import numpy as np
 from typing import Any, Callable, Optional, Tuple
@@ -65,6 +66,9 @@ class FER13(Dataset):
         transformed version.
     target_transform: callable (optional)
         A function/transform that takes in the target and transforms it.
+    color_mode: bool (optional)
+        If true, loads images as rgb (3 channels), otherwise loads gray
+        scaled images.
     TODO
     ----
     download: bool (optional)
@@ -72,7 +76,7 @@ class FER13(Dataset):
         root directory. If dataset is already download, it is not download
         again.
     """
-
+    url = "https://www.kaggle.com/deadskull7/fer2013/download"
     filename = "fer2013.csv"
     _repr_indent = 4
     classes = [
@@ -91,12 +95,21 @@ class FER13(Dataset):
         train: bool = True,
         transform: Optional[Callable] = None,
         target_transform: Optional[Callable] = None,
-        # download: bool = False,
+        color_mode = False,
+        download: bool = False,
     ) -> None:
         self.root = root
         self.train = train
         self.transform = transform
         self.target_transform = target_transform
+        self.color_mode = color_mode
+
+        if download:
+            self.download()
+        
+        if not self._check_integrity():
+            raise RuntimeError("Dataset not found or corrupted." +
+                               " You can use download=True to download it")
 
         dataframe = pd.read_csv(os.path.join(self.root, self.filename))
 
@@ -128,13 +141,15 @@ class FER13(Dataset):
         """
         pixels, target = self.data[index], self.targets[index]
 
-        gray = np.array(
+        image = np.array(
             list(map(int, pixels.split(" "))), dtype=np.uint8
         ).reshape((48, 48))
-        color = np.repeat(gray[..., np.newaxis], 3, -1)
+
+        if self.color_mode:
+            image = np.repeat(image[..., np.newaxis], 3, -1)
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
-        img = Image.fromarray(color)
+        img = Image.fromarray(image)
 
         if self.transform is not None:
             img = self.transform(img)
@@ -154,6 +169,20 @@ class FER13(Dataset):
             body += [repr(self.transform)]
         lines = [head] + [" " * self._repr_indent + line for line in body]
         return "\n".join(lines)
+
+    def _check_integrity(self) -> bool:
+        fpath = os.path.join(self.root, self.filename)
+        if os.path.isfile(fpath):
+            return True
+        else:
+            return False
+    
+    def download(self) -> None:
+        if self._check_integrity():
+            print('File already downloaded and verified')
+            return
+        # TODO: download
+        download_and_extract_archive(self.url, self.root)
 
 
 if __name__ == "__main__":

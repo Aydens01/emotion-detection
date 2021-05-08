@@ -1,44 +1,39 @@
 # emotion-detection
 
+Simple program that attempts to recognize facial expressions of people using a CNN.
+
 ## Dependencies
 
 This project requires [PyTorch](https://pytorch.org/) and [OpenCV](https://docs.opencv.org/3.4/da/df6/tutorial_py_table_of_contents_setup.html).
 
-## Structure
+## Databases
 
-* doc: documentation
-* rel: results released in pdf file.
-* src:
-  * lib: definitions of custom Python classes
-  * models: neural network back-ups
+In order to train some neural networks, we used the following datasets:
 
-## Change the neural network architecture
+* [FER2013](https://www.kaggle.com/deadskull7/fer2013)
 
-You can change the neural network architecture by modifying the `Net` class in `network.py`.
+## Approaches
 
-## Train a neural network
+Two approaches have been tried to solve the problem: one is to train convolutional neural networks from scratch, another is to fine-tune pretrained neural networks like `vgg` or `resnet`. 
 
-To train and save a new neural network with the balanced dataset you can use the following script:
+### Learning From Scratch
 
-```sh
-python3.7 src/training.py
-```
+### Transfer Learning
 
-All the networks saved will be in `src/models` folder.
+**I. Classifier warming up**
 
-## Run the live application
+Since we have to change the classification part in the architecture of a pretrained neural network, we might want to train the freshly initialized classification layers to avoid a too strong modification of the weights in the feature part leading to a loss of the benefits of using a pretrained model for feature extraction. So in this first step, only the classifier layers are trainable.
 
-You have to change the path used in `face_detection.py` to prevent errors.
-You can change the neural network loaded and used in the application by changing the path at the 19th line in `main.py`:
+| pretrained model | time | epochs | lr | momentum | max acc | min loss |
+|-|-|-|-|-|-|-|
+| vgg16 | 33m06s | 30 | 0.01 | 0.9 | 0.4032 | 1.549 |
+| resnet | ... | ... | ... | ... | ... | ... |
 
-```py
-CNN_PATH = './models/network_v2.pth'
-```
+**II. Fine-tuning**
 
-Commands to run the live application:
+Once the classification layers "warmed up", we fine-tune the whole network with a small learning rate to prevent modifying too much the feature extraction layers.
 
-```sh
-python src/main.py
-```
-
-You can see the prediction results on the terminal.
+| pretrained model | time | epochs | lr | momentum | max acc | min loss |
+|-|-|-|-|-|-|-|
+| vgg16 | 80m44s | 100 | 0.0001 | 0.9 | 0.6124 | 1.048 |
+| resnet | ... | ... | ... | ... | ... | ... |
